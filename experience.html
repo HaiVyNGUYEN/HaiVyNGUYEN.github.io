@@ -48,6 +48,19 @@ main {
     h1, h2 {
       color: #2c3e50;
     }
+
+      .experience-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+    }
+    .experience-item img {
+      width: 240px;
+      height: 80px;
+      object-fit: cover;
+      margin-right: 1rem;
+    }
+    
   </style>
 </head>
 <body>
@@ -64,27 +77,32 @@ main {
   </header>
 
   <main>
-    <h2>Professional Experience</h2>
-
-    <ul>
-      <li>
-        <strong>Ph.D. CIFRE – Data Scientist (Nov 2022 – present)</strong><br>
+   <div class="experience-item">
+      <img src="omp.png" alt="Renault">
+      <div>
+        <strong>Ph.D. CIFRE – Data Scientist (2022 – present)</strong><br>
         <em>Renault Group (CIFRE), IMT Toulouse & IRIT Toulouse</em><br>
-        Collaborating closely with Renault engineers on uncertainty quantification, knowledge distillation through feature transfer, and improving robustness of neural models.
-      </li>
-      <br>
-      <li>
+        Working closely with Renault engineers to explore uncertainty, distillation via features, and robustness in neural models.
+      </div>
+    </div>
+
+    <div class="experience-item">
+      <img src="omp.png" alt="CLS Group">
+      <div>
         <strong>Apprentice Data Scientist (Oct 2021 – Sep 2022)</strong><br>
         <em>CLS Group, Ramonville</em><br>
-        Built LSTM-autoencoder for animal trajectory clustering. Developed a novel spatio-temporal clustering algorithm, DBSCAN-temporel, considering geographic and chronological structure. Used for animal and maritime vessel trajectory analysis. Designed tools for accessible visualization.
-      </li>
-      <br>
-      <li>
+        LSTM-autoencoder for trajectory clustering; created DBSCAN-temporel, a novel spatio-temporal clustering algorithm; visualized movement data for non-experts.
+      </div>
+    </div>
+
+    <div class="experience-item">
+      <img src="omp.png" alt="CNRS">
+      <div>
         <strong>ML/DL Intern (Jun 2021 – Sep 2021)</strong><br>
         <em>CNRS, Observatoire Midi-Pyrénées</em><br>
-        Worked on seismic subsurface structure detection. Extracted dispersion curves via image segmentation using DCNet (dual U-Net model). Built synthetic training dataset by synchronizing SPECFEM2D and CPS programs for automatic labeling.
-      </li>
-    </ul>
+        Used deep learning (DCNet) to segment dispersion images; synchronized CPS and SPECFEM2D to auto-label data for seismic inversion.
+      </div>
+    </div>
   </main>
 </body>
 </html>
