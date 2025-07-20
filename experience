@@ -1,32 +1,43 @@
-<h2>Professional Experience</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Experience – Your Name</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      line-height: 1.6;
+    }
+    a {
+      text-decoration: none;
+      color: #007acc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Professional Experience</h1>
 
-<ul>
-  <li>
-    <strong>Ph.D. CIFRE – Data Scientist (2022 – present)</strong>  
+  <ul>
+    <li>
+      <strong>Ph.D. CIFRE – Data Scientist (2022 – present)</strong><br>
+      <em>Renault Group (CIFRE), IMT Toulouse & IRIT Toulouse</em><br>
+      Working closely with Renault engineers to explore uncertainty, distillation via features, and robustness in neural models.
+    </li>
     <br>
-    <em>Renault Group (CIFRE contract), IMT Toulouse & IRIT Toulouse</em>
+    <li>
+      <strong>Apprentice Data Scientist (Oct 2021 – Sep 2022)</strong><br>
+      <em>CLS Group, Ramonville</em><br>
+      LSTM-autoencoder for trajectory clustering; created DBSCAN-temporel, a novel spatio-temporal clustering algorithm; visualized movement data for non-experts.
+    </li>
     <br>
-    Working closely with engineers at Renault to develop innovative AI solutions as part of a CIFRE research project. My focus includes uncertainty quantification, feature-based knowledge distillation, and robustness of neural networks.
-  </li>
+    <li>
+      <strong>ML/DL Intern (Jun 2021 – Sep 2021)</strong><br>
+      <em>CNRS, Observatoire Midi-Pyrénées</em><br>
+      Used deep learning (DCNet) to segment dispersion images; synchronized CPS and SPECFEM2D to auto-label data for seismic inversion.
+    </li>
+  </ul>
 
-  <li>
-    <strong>Apprentice Data Scientist (Oct 2021 – Sep 2022)</strong>  
-    <br>
-    <em>CLS (Collecte Localisation Satellites Group), Ramonville – France</em>
-    <br>
-    • Built LSTM-autoencoder models for unsupervised clustering of variable-length animal trajectories in a latent space.  
-    • Developed a novel unsupervised algorithm, <strong>DBSCAN-temporel</strong>, inspired by DBSCAN but adapted to temporal and spatial constraints.
-    • Designed visualizations to make movement data accessible to non-experts.
-  </li>
-
-  <li>
-    <strong>Machine Learning Intern (Jun 2021 – Sep 2021)</strong>  
-    <br>
-    <em>CNRS, Observatoire Midi-Pyrénées – Toulouse, France</em>
-    <br>
-    • Applied deep learning for seismic image segmentation to extract dispersion curves and reconstruct subsurface structures.  
-    • Generated synthetic training data by synchronizing two geophysical simulation programs (SPECFEM2D and CPS).  
-    • Developed the first method for automatic labeling in this context, reducing manual annotation cost.  
-    • Used DCNet (dual U-Net architecture) to improve model robustness.
-  </li>
-</ul>
+  <p><a href="index.html">← Back to About Me</a></p>
+</body>
+</html>
