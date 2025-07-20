@@ -1,0 +1,32 @@
+<h2>Professional Experience</h2>
+
+<ul>
+  <li>
+    <strong>Ph.D. CIFRE – Data Scientist (2022 – present)</strong>  
+    <br>
+    <em>Renault Group (CIFRE contract), IMT Toulouse & IRIT Toulouse</em>
+    <br>
+    Working closely with engineers at Renault to develop innovative AI solutions as part of a CIFRE research project. My focus includes uncertainty quantification, feature-based knowledge distillation, and robustness of neural networks.
+  </li>
+
+  <li>
+    <strong>Apprentice Data Scientist (Oct 2021 – Sep 2022)</strong>  
+    <br>
+    <em>CLS (Collecte Localisation Satellites Group), Ramonville – France</em>
+    <br>
+    • Built LSTM-autoencoder models for unsupervised clustering of variable-length animal trajectories in a latent space.  
+    • Developed a novel unsupervised algorithm, <strong>DBSCAN-temporel</strong>, inspired by DBSCAN but adapted to temporal and spatial constraints.
+    • Designed visualizations to make movement data accessible to non-experts.
+  </li>
+
+  <li>
+    <strong>Machine Learning Intern (Jun 2021 – Sep 2021)</strong>  
+    <br>
+    <em>CNRS, Observatoire Midi-Pyrénées – Toulouse, France</em>
+    <br>
+    • Applied deep learning for seismic image segmentation to extract dispersion curves and reconstruct subsurface structures.  
+    • Generated synthetic training data by synchronizing two geophysical simulation programs (SPECFEM2D and CPS).  
+    • Developed the first method for automatic labeling in this context, reducing manual annotation cost.  
+    • Used DCNet (dual U-Net architecture) to improve model robustness.
+  </li>
+</ul>
