@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Hai-Vy NGUYEN - Publications</title>
+  <title>Hai-Vy NGUYEN - Experience</title>
   <style>
     html {
       overflow-y: scroll;
@@ -48,6 +48,19 @@ main {
     h1, h2 {
       color: #2c3e50;
     }
+
+      .experience-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+    }
+    .experience-item img {
+      height: 400px;
+      width: 400px;
+      object-fit: contain;
+      margin-right: 1rem;
+    }
+    
   </style>
 </head>
 <body>
@@ -65,7 +78,22 @@ main {
 
   <main>
     <h2>Publications</h2>
-    <p>Coming soon...</p>
+    <p>
+    <hr>
+   <div class="experience-item">
+      <img src="animations.gif" alt="Renault">
+       <div>
+    <strong>Combining Statistical Depth and Fermat Distance for Uncertainty Quantification</strong>  
+    <br><em>Hai‑Vy Nguyen, Fabrice Gamboa, Reda Chhaibi, Sixin Zhang, Serge Gratton, Thierry Giaccone</em>  
+    <br><em>NeurIPS 2024 (Main Conference)</em>  
+    <p style="margin-top: 0.5rem;">
+      Introduces a novel, non-parametric method to quantify out-of-domain uncertainty in neural networks by combining 
+      <strong>Lens Depth</strong> with <strong>Fermat Distance</strong> in feature space. The approach is test-time only, 
+      needs no retraining or tuning, and achieves strong performance across standard benchmarks.  
+    </p>
+  </div>
+    </div>
+    <hr>
   </main>
 </body>
 </html>
