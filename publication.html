@@ -55,8 +55,8 @@ main {
       margin-bottom: 2rem;
     }
     .experience-item img {
-      height: 400px;
-      width: 400px;
+      height: 300px;
+      width: 300px;
       object-fit: contain;
       margin-right: 1rem;
     }
@@ -82,14 +82,37 @@ main {
     <hr>
    <div class="experience-item">
       <img src="animations.gif" alt="Renault">
-       <div>
-    <strong>Combining Statistical Depth and Fermat Distance for Uncertainty Quantification</strong>  
-    <br><em>Hai‑Vy Nguyen, Fabrice Gamboa, Reda Chhaibi, Sixin Zhang, Serge Gratton, Thierry Giaccone</em>  
-    <br><em>NeurIPS 2024 (Main Conference)</em>  
+ <div>
+    <strong>Combining Statistical Depth and Fermat Distance for Uncertainty Quantification</strong><br>
+    <em>Hai‑Vy Nguyen, Fabrice Gamboa, Reda Chhaibi, Sixin Zhang, Serge Gratton, Thierry Giaccone</em><br>
+    <em>NeurIPS 2024 (Main Conference)</em>
+
     <p style="margin-top: 0.5rem;">
-      Introduces a novel, non-parametric method to quantify out-of-domain uncertainty in neural networks by combining 
-      <strong>Lens Depth</strong> with <strong>Fermat Distance</strong> in feature space. The approach is test-time only, 
-      needs no retraining or tuning, and achieves strong performance across standard benchmarks.  
+      This paper introduces a new framework for <strong>uncertainty quantification</strong> based on geometric principles in the feature space of neural networks.
+      The method relies on two complementary ideas:
+    </p>
+
+    <ul style="margin-left: 1.2rem;">
+      <li>
+        <strong>Lens Depth</strong>: a statistical depth function that measures how “central” a test point is with respect to the training data distribution.
+        It reflects how likely a point is to belong to a data manifold, based on its spatial relation to pairs of training points.
+      </li>
+      <li>
+        <strong>Fermat Distance</strong>: a distance that favors high-density regions. It constructs a path that adapts to the data distribution and geometry.
+      </li>
+    </ul>
+
+    <p>
+      By combining these two quantities, we define an uncertainty score that identifies out-of-distribution.
+      The score requires only the feature embeddings from a pre-trained model — no changes to training or retraining are needed.
+    </p>
+
+    <p>
+      The proposed approach is <strong>non-parametric, parameter-free, and model-agnostic</strong>.
+    </p>
+
+    <p>
+      This work demonstrates that geometric insights in feature space can lead to powerful and lightweight uncertainty estimation tools, suitable for real-world deployment.
     </p>
   </div>
     </div>
