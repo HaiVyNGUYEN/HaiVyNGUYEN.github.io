@@ -134,36 +134,32 @@ main {
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.12);
   width: 100%;
-  max-width: 280px;         /* default size on small screens */
+  max-width: 280px;
   object-fit: contain;
   transform-style: preserve-3d;
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-/* Tilt effect (like seeing a book from an angle) */
+/* Tilt effect: only Y-axis (from left side) */
 .simple-gif-row .gif-item.tilted {
-  transform: rotateY(-8deg) rotateX(3deg);
+  transform: rotateY(-12deg);  /* tilt from left side */
 }
 
 /* Hover: straighten + slight zoom */
 .simple-gif-row .gif-item.tilted:hover {
-  transform: rotateY(0deg) rotateX(0deg) scale(1.05);
+  transform: rotateY(0deg) scale(1.05);
   box-shadow: 0 12px 28px rgba(0,0,0,0.2);
   cursor: pointer;
 }
 
 /* Responsive scaling: medium screens */
 @media (min-width: 768px) {
-  .simple-gif-row .gif-item {
-    max-width: 320px;
-  }
+  .simple-gif-row .gif-item { max-width: 320px; }
 }
 
 /* Responsive scaling: large screens */
 @media (min-width: 1200px) {
-  .simple-gif-row .gif-item {
-    max-width: 380px;
-  }
+  .simple-gif-row .gif-item { max-width: 380px; }
 }
 </style>
 
