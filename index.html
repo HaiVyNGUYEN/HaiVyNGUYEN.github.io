@@ -96,32 +96,34 @@ main {
 
 <div class="gif-section">
   <h2 class="gif-title">The Hidden Structure of Neural Features Has Its Own Story to Tell ✨</h2>
-  <div class="simple-gif-row">
-    
-    <div class="book tilted">
-      <div class="cover">
-        <img src="animations.gif" alt="Animations GIF">
-      </div>
-      <div class="spine"></div>
-      <div class="sparkle-container"></div>
-    </div>
 
-    <div class="book tilted">
-      <div class="cover">
-        <img src="combined.gif" alt="Combined GIF">
-      </div>
-      <div class="spine"></div>
-      <div class="sparkle-container"></div>
-    </div>
+  <div class="sparkle-zone">
+    <!-- Sparkles behind books -->
+    <div class="sparkles"></div>
 
-    <div class="book tilted">
-      <div class="cover">
-        <img src="rec_attention.gif" alt="Rectangular Attention GIF">
+    <!-- Books row -->
+    <div class="simple-gif-row">
+      <div class="book tilted">
+        <div class="cover">
+          <img src="animations.gif" alt="Animations GIF">
+        </div>
+        <div class="spine"></div>
       </div>
-      <div class="spine"></div>
-      <div class="sparkle-container"></div>
-    </div>
 
+      <div class="book tilted">
+        <div class="cover">
+          <img src="combined.gif" alt="Combined GIF">
+        </div>
+        <div class="spine"></div>
+      </div>
+
+      <div class="book tilted">
+        <div class="cover">
+          <img src="rec_attention.gif" alt="Rectangular Attention GIF">
+        </div>
+        <div class="spine"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -138,6 +140,12 @@ main {
   color: #2c3e50;
 }
 
+.sparkle-zone {
+  position: relative;
+  width: 100%;
+  height: 400px; /* confine sparkles vertically */
+}
+
 .simple-gif-row {
   display: flex;
   justify-content: center;
@@ -145,6 +153,8 @@ main {
   gap: 2rem;
   flex-wrap: wrap;
   perspective: 1200px;
+  position: relative;
+  z-index: 10; /* books in front of sparkles */
 }
 
 /* Book container */
@@ -194,33 +204,31 @@ main {
   z-index: -1;
 }
 
-/* Sparkles */
-.sparkle-container {
+/* Sparkles around books */
+.sparkles {
   position: absolute;
-  top: 25%;   /* upper horizontal band */
-  left: 0;
   width: 100%;
-  height: 50%; /* band height: 50% of book */
+  height: 100%;
+  top: 0;
+  left: 0;
   pointer-events: none;
   overflow: visible;
-  transform-style: flat;
-  z-index: 10;
+  z-index: 5;
 }
 
-/* Sparkle particles */
 .sparkle {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.9;
-  animation-name: sparkle;
+  opacity: 0.6; /* slightly transparent */
+  animation-name: orbit;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
 
-@keyframes sparkle {
-  0%   { transform: translate(0,0) scale(1); }
-  50%  { transform: translate(30px,-20px) scale(1.2); }
-  100% { transform: translate(-30px,20px) scale(1); }
+@keyframes orbit {
+  0% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(var(--dx,10px), var(--dy,15px)) scale(1.2); }
+  100% { transform: translate(calc(-1 * var(--dx,10px)), calc(-1 * var(--dy,15px))) scale(1); }
 }
 
 /* Responsive scaling */
@@ -229,25 +237,48 @@ main {
 </style>
 
 <script>
-// generate sparkles dynamically
-document.querySelectorAll('.sparkle-container').forEach(container => {
-  const colors = ['red','green','blue','yellow','cyan','magenta'];
+// Generate sparkles around books
+const sparkleZone = document.querySelector('.sparkles');
+const colors = ['red','green','blue','yellow','cyan','magenta'];
+const books = document.querySelectorAll('.book');
+
+books.forEach((book, index) => {
+  const bookLeft = book.offsetLeft;
+  const bookTop = book.offsetTop;
+  const bookWidth = book.offsetWidth;
+  const bookHeight = book.offsetHeight;
+
   for(let i=0; i<100; i++){
-    const sparkle = document.createElement('div');
-    sparkle.className = 'sparkle';
+    const s = document.createElement('div');
+    s.className = 'sparkle';
     const size = Math.random()*6 + 4; // 4-10px
-    sparkle.style.width = size + 'px';
-    sparkle.style.height = size + 'px';
-    sparkle.style.background = colors[Math.floor(Math.random()*colors.length)];
-    sparkle.style.top = Math.random()*100 + '%'; // within container height
-    sparkle.style.left = Math.random()*100 + '%';
-    sparkle.style.animationDuration = (2 + Math.random()*3) + 's';
-    sparkle.style.animationDelay = Math.random()*3 + 's';
-    container.appendChild(sparkle);
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.background = colors[Math.floor(Math.random()*colors.length)];
+    s.style.opacity = 0.4 + Math.random()*0.3; // opacity 0.4-0.7
+
+    // Randomly place outside book boundaries
+    let x;
+    if(Math.random()<0.5) {
+      x = bookLeft - 20 - Math.random()*50; // left
+    } else {
+      x = bookLeft + bookWidth + 20 + Math.random()*50; // right
+    }
+    let y = bookTop + Math.random()*bookHeight; // vertical within book height
+    s.style.left = x + 'px';
+    s.style.top = y + 'px';
+
+    // Random orbit movement
+    s.style.setProperty('--dx', (Math.random()*30 + 10) + 'px');
+    s.style.setProperty('--dy', (Math.random()*20 + 10) + 'px');
+    s.style.animationDuration = (2 + Math.random()*3) + 's';
+    s.style.animationDelay = Math.random()*3 + 's';
+
+    sparkleZone.appendChild(s);
   }
 });
 </script>
-
+    
     <hr>
 
     <h2>Education 🎓 </h2>
