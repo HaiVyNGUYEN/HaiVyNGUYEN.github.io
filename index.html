@@ -97,9 +97,30 @@ main {
 <div class="gif-section">
   <h2 class="gif-title">The Hidden Structure of Neural Features Has Its Own Story to Tell ✨</h2>
   <div class="simple-gif-row">
-    <img src="animations.gif" alt="Animations GIF" class="gif-item tilted">
-    <img src="combined.gif" alt="Combined GIF" class="gif-item tilted">
-    <img src="rec_attention.gif" alt="Rectangular Attention GIF" class="gif-item tilted">
+    <div class="gif-wrapper tilted">
+      <img src="animations.gif" alt="Animations GIF" class="gif-item">
+      <div class="sparkle-container">
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+      </div>
+    </div>
+    <div class="gif-wrapper tilted">
+      <img src="combined.gif" alt="Combined GIF" class="gif-item">
+      <div class="sparkle-container">
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+      </div>
+    </div>
+    <div class="gif-wrapper tilted">
+      <img src="rec_attention.gif" alt="Rectangular Attention GIF" class="gif-item">
+      <div class="sparkle-container">
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -124,43 +145,93 @@ main {
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  flex-wrap: wrap;          /* stack on very small screens */
-  perspective: 1000px;      /* enable 3D effect */
+  flex-wrap: wrap;
+  perspective: 1000px;
 }
 
-/* GIF cards */
-.simple-gif-row .gif-item {
+/* Wrapper for tilt + thickness */
+.gif-wrapper {
+  position: relative;
+  display: inline-block;
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease;
+}
+
+/* Spine effect */
+.gif-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -8px;
+  width: 8px;
+  height: 100%;
+  background: linear-gradient(to right, #ccc, #999);
+  border-radius: 3px;
+  transform: rotateY(0deg);
+  z-index: -1;
+}
+
+/* Tilt from left side (Y-axis) */
+.gif-wrapper.tilted {
+  transform: rotateY(20deg);
+}
+
+/* Hover: straighten + zoom */
+.gif-wrapper.tilted:hover {
+  transform: rotateY(0deg) scale(1.05);
+}
+
+/* GIF styling */
+.gif-item {
   display: block;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.12);
   width: 100%;
   max-width: 280px;
   object-fit: contain;
-  transform-style: preserve-3d;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  transition: box-shadow 0.35s ease;
 }
 
-/* Tilt effect: only Y-axis (from left side) */
-.simple-gif-row .gif-item.tilted {
-  transform: rotateY(20deg);  /* tilt from left side */
-}
-
-/* Hover: straighten + slight zoom */
-.simple-gif-row .gif-item.tilted:hover {
-  transform: rotateY(0deg) scale(1.05);
+.gif-wrapper:hover .gif-item {
   box-shadow: 0 12px 28px rgba(0,0,0,0.2);
   cursor: pointer;
 }
 
-/* Responsive scaling: medium screens */
-@media (min-width: 768px) {
-  .simple-gif-row .gif-item { max-width: 320px; }
+/* Sparkle particles */
+.sparkle-container {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  pointer-events: none;
+  overflow: visible;
 }
 
-/* Responsive scaling: large screens */
-@media (min-width: 1200px) {
-  .simple-gif-row .gif-item { max-width: 380px; }
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, rgba(255,255,255,0) 70%);
+  opacity: 0.7;
+  animation: sparkle 3s infinite linear;
 }
+
+/* Randomize particle positions */
+.sparkle:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+.sparkle:nth-child(2) { top: 50%; left: 70%; animation-delay: 1s; }
+.sparkle:nth-child(3) { top: 30%; left: 40%; animation-delay: 2s; }
+
+@keyframes sparkle {
+  0% { transform: translate(0,0) scale(1); opacity: 0.5; }
+  50% { transform: translate(20px,-15px) scale(1.3); opacity: 1; }
+  100% { transform: translate(-10px,10px) scale(1); opacity: 0.5; }
+}
+
+/* Responsive scaling */
+@media (min-width: 768px) { .gif-item { max-width: 320px; } }
+@media (min-width: 1200px) { .gif-item { max-width: 380px; } }
 </style>
 
     <hr>
