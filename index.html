@@ -92,89 +92,118 @@ main {
       I believe that this line of inquiry is essential to uncovering and explaining the underlying behaviors of modern AI models — including both vision and language systems.
     </p>
 
-<!-- Orbital GIF Layout with Rounded Rectangles -->
-<section style="margin: 2rem 0; position: relative; height: 420px;">
-  <div style="position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+<!-- ORBITAL GIF CARDS (Rounded Rectangles) -->
+<section class="orbit-gif-cards" aria-label="Research GIF orbit">
+  <!-- Connection ring -->
+  <svg class="orbit-ring" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <circle cx="50" cy="50" r="42" />
+  </svg>
 
-    <!-- Center GIF -->
-    <div class="gif-card center-gif">
-      <img src="combined.gif" alt="Combined GIF">
-    </div>
+  <!-- Three cards placed on a circular orbit -->
+  <figure class="orbit-card" style="--angle:-90deg;">
+    <img src="animations.gif" alt="Feature-space & dynamics (animations)">
+    <figcaption>Feature space & dynamics</figcaption>
+  </figure>
 
-    <!-- Orbiting GIFs -->
-    <div class="gif-card orbit1">
-      <img src="animations.gif" alt="Animations GIF">
-    </div>
-    <div class="gif-card orbit2">
-      <img src="rec_attention.gif" alt="Attention GIF">
-    </div>
+  <figure class="orbit-card" style="--angle:30deg;">
+    <img src="combined.gif" alt="Perception coherence & transfer (combined)">
+    <figcaption>Perception coherence & transfer</figcaption>
+  </figure>
 
-    <!-- Connecting arrows -->
-    <svg class="orbital-arrows">
-      <defs>
-        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
-          <polygon points="0 0, 10 3.5, 0 7" fill="rgba(0,0,0,0.35)" />
-        </marker>
-      </defs>
-      <circle cx="50%" cy="50%" r="160" stroke="rgba(0,0,0,0.15)" stroke-width="2" fill="none" />
-      <path d="M 50% 50% m -160 0 a 160 160 0 0 1 320 0" stroke="rgba(0,0,0,0.35)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" />
-    </svg>
-
-  </div>
+  <figure class="orbit-card" style="--angle:210deg;">
+    <img src="rec_attention.gif" alt="Rectangular attention (rec_attention)">
+    <figcaption>Rectangular attention</figcaption>
+  </figure>
 </section>
 
 <style>
-  .gif-card {
-    position: absolute;
-    background: white;
-    border-radius: 16px;
-    padding: 8px;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-    transition: transform 0.3s;
-  }
-
-  .gif-card img {
+  /* ===== Orbital layout container ===== */
+  .orbit-gif-cards {
+    --r: 220px;                  /* orbit radius */
+    --card-w: clamp(220px, 26vw, 300px);
+    --card-br: 16px;             /* card corner radius */
+    position: relative;
+    height: calc(var(--r) * 2 + 220px); /* enough room for big cards */
     display: block;
-    width: 180px;
-    height: auto;
-    border-radius: 12px;
+    margin: 2rem 0;
   }
 
-  .center-gif {
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .orbit1 {
-    top: 50%;
-    left: calc(50% - 260px);
-    transform: translate(-50%, -50%);
-  }
-
-  .orbit2 {
-    top: 50%;
-    left: calc(50% + 260px);
-    transform: translate(-50%, -50%);
-  }
-
-  .orbital-arrows {
+  /* ===== Connection ring behind the cards ===== */
+  .orbit-ring {
     position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
   }
-
-  .gif-card:hover {
-    transform: translate(-50%, -50%) scale(1.05);
+  .orbit-ring circle {
+    fill: none;
+    stroke: rgba(0,0,0,0.12);
+    stroke-width: 0.8; /* SVG units (viewBox-relative) */
   }
 
-  /* Responsive */
-  @media (max-width: 768px) {
-    .gif-card img { width: 120px; }
-    .orbit1 { left: 30%; }
-    .orbit2 { left: 70%; }
-    .orbital-arrows { display: none; }
+  /* ===== Card (rounded rectangle) ===== */
+  .orbit-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    /* Place the card center on the orbit using polar transform */
+    transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--r)) rotate(calc(-1 * var(--angle)));
+    background: #fff;
+    border-radius: var(--card-br);
+    padding: 10px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+    overflow: hidden;            /* ensure rounded rectangle clipping */
+    width: var(--card-w);
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .orbit-card img {
+    display: block;
+    width: 100%;
+    height: auto;                /* keep original aspect ratio — no distortion */
+    border-radius: calc(var(--card-br) - 4px) !important; /* ensure rounded corners (NOT a circle) */
+  }
+
+  .orbit-card figcaption {
+    font-size: 0.9rem;
+    color: #444;
+    padding-top: 6px;
+    text-align: center;
+  }
+
+  /* Hover lift */
+  .orbit-card:hover {
+    box-shadow: 0 14px 30px rgba(0,0,0,0.22);
+    transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--r)) rotate(calc(-1 * var(--angle))) scale(1.04);
+  }
+
+  /* ===== Responsive tweaks ===== */
+  @media (max-width: 900px) {
+    .orbit-gif-cards { --r: 180px; }
+  }
+  @media (max-width: 700px) {
+    .orbit-gif-cards { --r: 140px; }
+  }
+  @media (max-width: 520px) {
+    /* Stack vertically on very small screens for clarity */
+    .orbit-gif-cards {
+      height: auto;
+      display: grid;
+      gap: 1rem;
+    }
+    .orbit-ring { display: none; }
+    .orbit-card {
+      position: relative;
+      left: auto; top: auto;
+      transform: none;
+      width: min(92vw, 520px);
+      margin: 0 auto;
+    }
   }
 </style>
 
