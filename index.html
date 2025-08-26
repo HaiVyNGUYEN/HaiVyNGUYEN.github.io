@@ -94,179 +94,133 @@ main {
 
     <hr>
 
+<!-- === GIF BOOK SECTION START === -->
 <div class="gif-section">
-  <h2 class="gif-title">The Hidden Structure of Neural Features Has Its Own Story to Tell ✨</h2>
-
-  <div class="sparkle-zone">
-    <!-- Sparkles behind books -->
-    <div class="sparkles"></div>
-
-    <!-- Books row -->
-    <div class="simple-gif-row">
-      <div class="book tilted">
-        <div class="cover">
-          <img src="animations.gif" alt="Animations GIF">
-        </div>
-        <div class="spine"></div>
-      </div>
-
-      <div class="book tilted">
-        <div class="cover">
-          <img src="combined.gif" alt="Combined GIF">
-        </div>
-        <div class="spine"></div>
-      </div>
-
-      <div class="book tilted">
-        <div class="cover">
-          <img src="rec_attention.gif" alt="Rectangular Attention GIF">
-        </div>
-        <div class="spine"></div>
-      </div>
-    </div>
+  <h2>Feature structures carry their own story to discover ✨</h2>
+  <canvas class="aura"></canvas>
+  <div class="gif-container">
+    <div class="book"><img src="animations.gif" alt="Animation"></div>
+    <div class="book"><img src="combined.gif" alt="Combined"></div>
+    <div class="book"><img src="rec_attention.gif" alt="Recurrent Attention"></div>
   </div>
 </div>
 
 <style>
-.gif-section {
-  text-align: center;
-  margin: 3rem 0;
-}
-
-.gif-title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  color: #2c3e50;
-}
-
-.sparkle-zone {
-  position: relative;
-  width: 100%;
-  height: 500px; /* taller zone for sparkles between <hr> */
-}
-
-.simple-gif-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-  perspective: 1200px;
-  position: relative;
-  z-index: 10; /* books in front of sparkles */
-  transform: scale(0.9); /* shrink books to 90% */
-}
-
-/* Book container */
-.book {
-  position: relative;
-  width: 260px;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-}
-
-.book.tilted {
-  transform: rotateY(20deg);
-}
-
-.book:hover {
-  transform: rotateY(0deg) scale(1.05);
-  cursor: pointer;
-}
-
-/* Cover face (GIF) */
-.book .cover {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  overflow: hidden;
-  backface-visibility: hidden;
-}
-
-.book .cover img {
-  width: 100%;
-  display: block;
-  border-radius: 12px;
-  object-fit: cover;
-}
-
-/* Spine face (thickness) */
-.book .spine {
-  position: absolute;
-  top: 0;
-  left: -12px;
-  width: 12px;
-  height: 100%;
-  background: linear-gradient(to right, #ccc, #999);
-  border-radius: 3px;
-  transform: rotateY(0deg);
-  z-index: -1;
-}
-
-/* Sparkles around books */
-.sparkles {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  overflow: visible;
-  z-index: 5;
-}
-
-.sparkle {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.6; /* slightly transparent */
-  animation-name: orbit;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-@keyframes orbit {
-  0% { transform: translate(0,0) scale(1); }
-  50% { transform: translate(var(--dx,10px), var(--dy,15px)) scale(1.2); }
-  100% { transform: translate(calc(-1 * var(--dx,10px)), calc(-1 * var(--dy,15px))) scale(1); }
-}
-
-/* Responsive scaling */
-@media (min-width: 768px) { .book { width: 300px; } }
-@media (min-width: 1200px) { .book { width: 340px; } }
+  .gif-section {
+    position: relative;
+    margin: 3rem auto;
+    padding: 2rem 0;
+    width: 100%;
+    max-width: 90vw;
+    overflow: hidden;
+    border-top: 2px solid #ddd;
+    border-bottom: 2px solid #ddd;
+  }
+  .gif-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #2c3e50;
+  }
+  .gif-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    perspective: 1200px;
+    z-index: 2;
+    position: relative;
+  }
+  .book {
+    width: 240px;  /* 90% size */
+    height: 240px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    transform: rotateY(20deg);
+    transition: transform 0.6s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .book img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    display: block;
+  }
+  .book:hover {
+    transform: rotateY(0deg) scale(1.05);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+  }
+  canvas.aura {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
 </style>
 
 <script>
-// Generate sparkles across entire section
-const sparkleZone = document.querySelector('.sparkles');
-const colors = ['red','green','blue','yellow','cyan','magenta'];
+  const canvas = document.querySelector('.gif-section .aura');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let W, H;
 
-for(let i=0; i<300; i++){ // 100 per book, but spread across section
-  const s = document.createElement('div');
-  s.className = 'sparkle';
-  const size = Math.random()*6 + 4; // 4-10px
-  s.style.width = size + 'px';
-  s.style.height = size + 'px';
-  s.style.background = colors[Math.floor(Math.random()*colors.length)];
-  s.style.opacity = 0.4 + Math.random()*0.3; // opacity 0.4-0.7
+  function resizeCanvas() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
 
-  // Random position across section (not inside books)
-  const zoneWidth = sparkleZone.offsetWidth;
-  const zoneHeight = sparkleZone.offsetHeight;
-  s.style.left = Math.random()*zoneWidth + 'px';
-  s.style.top = Math.random()*zoneHeight + 'px';
+  function random(min, max) {
+    return Math.random() * (max - min) + min;
+  }
 
-  // Random orbit movement
-  s.style.setProperty('--dx', (Math.random()*80 - 40) + 'px'); // up to ±40px
-  s.style.setProperty('--dy', (Math.random()*200 - 100) + 'px'); // up to ±100px vertically
-  s.style.animationDuration = (3 + Math.random()*4) + 's';
-  s.style.animationDelay = Math.random()*3 + 's';
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = random(0, W);
+      this.y = random(0, H);
+      this.size = random(3, 8);  // larger particles
+      this.color = `hsla(${random(0,360)}, 100%, 60%, 0.8)`; // brighter & less transparent
+      this.vx = random(-0.7, 0.7);
+      this.vy = random(-0.7, 0.7);
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+  }
 
-  sparkleZone.appendChild(s);
-}
+  function initParticles(num) {
+    particles = [];
+    for (let i=0; i<num; i++) particles.push(new Particle());
+  }
+
+  function animate() {
+    ctx.clearRect(0,0,W,H);
+    for (let p of particles) {
+      p.update();
+      p.draw();
+    }
+    requestAnimationFrame(animate);
+  }
+
+  initParticles(150);
+  animate();
 </script>
-    
+<!-- === GIF BOOK SECTION END === -->
+
     <hr>
 
     <h2>Education 🎓 </h2>
