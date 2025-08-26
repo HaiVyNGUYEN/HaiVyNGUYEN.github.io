@@ -92,119 +92,74 @@ main {
       I believe that this line of inquiry is essential to uncovering and explaining the underlying behaviors of modern AI models — including both vision and language systems.
     </p>
 
-<!-- ORBITAL GIF CARDS (Rounded Rectangles) -->
-<section class="orbit-gif-cards" aria-label="Research GIF orbit">
-  <!-- Connection ring -->
-  <svg class="orbit-ring" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <circle cx="50" cy="50" r="42" />
-  </svg>
+    <hr>
 
-  <!-- Three cards placed on a circular orbit -->
-  <figure class="orbit-card" style="--angle:-90deg;">
-    <img src="animations.gif" alt="Feature-space & dynamics (animations)">
-    <figcaption>Feature space & dynamics</figcaption>
-  </figure>
-
-  <figure class="orbit-card" style="--angle:30deg;">
-    <img src="combined.gif" alt="Perception coherence & transfer (combined)">
-    <figcaption>Perception coherence & transfer</figcaption>
-  </figure>
-
-  <figure class="orbit-card" style="--angle:210deg;">
-    <img src="rec_attention.gif" alt="Rectangular attention (rec_attention)">
-    <figcaption>Rectangular attention</figcaption>
-  </figure>
-</section>
+<!-- GIF SECTION: Hidden Structure of Neural Features -->
+<div class="gif-section">
+  <h2 class="gif-title">The Hidden Structure of Neural Features Has Its Own Story to Tell ✨</h2>
+  <div class="simple-gif-row">
+    <img src="animations.gif" alt="Animations GIF" class="gif-item">
+    <img src="combined.gif" alt="Combined GIF" class="gif-item">
+    <img src="rec_attention.gif" alt="Rectangular Attention GIF" class="gif-item">
+  </div>
+</div>
 
 <style>
-  /* ===== Orbital layout container ===== */
-  .orbit-gif-cards {
-    --r: 220px;                  /* orbit radius */
-    --card-w: clamp(220px, 26vw, 300px);
-    --card-br: 16px;             /* card corner radius */
-    position: relative;
-    height: calc(var(--r) * 2 + 220px); /* enough room for big cards */
-    display: block;
-    margin: 2rem 0;
-  }
+/* Container & Title */
+.gif-section {
+  text-align: center;
+  margin: 3rem 0;
+}
 
-  /* ===== Connection ring behind the cards ===== */
-  .orbit-ring {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-  .orbit-ring circle {
-    fill: none;
-    stroke: rgba(0,0,0,0.12);
-    stroke-width: 0.8; /* SVG units (viewBox-relative) */
-  }
+.gif-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
 
-  /* ===== Card (rounded rectangle) ===== */
-  .orbit-card {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    /* Place the card center on the orbit using polar transform */
-    transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--r)) rotate(calc(-1 * var(--angle)));
-    background: #fff;
-    border-radius: var(--card-br);
-    padding: 10px;
-    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
-    overflow: hidden;            /* ensure rounded rectangle clipping */
-    width: var(--card-w);
-    max-width: 90vw;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
+/* Row layout */
+.simple-gif-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 0 auto;
+  flex-wrap: wrap; /* stack on very small screens */
+}
 
-  .orbit-card img {
-    display: block;
-    width: 100%;
-    height: auto;                /* keep original aspect ratio — no distortion */
-    border-radius: calc(var(--card-br) - 4px) !important; /* ensure rounded corners (NOT a circle) */
-  }
+/* GIF cards */
+.simple-gif-row .gif-item {
+  display: block;
+  border-radius: 12px; /* rounded rectangle */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  width: 100%;
+  max-width: 280px; /* default size */
+  object-fit: contain;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
 
-  .orbit-card figcaption {
-    font-size: 0.9rem;
-    color: #444;
-    padding-top: 6px;
-    text-align: center;
-  }
+/* Hover effect */
+.simple-gif-row .gif-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
 
-  /* Hover lift */
-  .orbit-card:hover {
-    box-shadow: 0 14px 30px rgba(0,0,0,0.22);
-    transform: translate(-50%, -50%) rotate(var(--angle)) translate(var(--r)) rotate(calc(-1 * var(--angle))) scale(1.04);
+/* Responsive scaling: medium screens */
+@media (min-width: 768px) {
+  .simple-gif-row .gif-item {
+    max-width: 320px;
   }
+}
 
-  /* ===== Responsive tweaks ===== */
-  @media (max-width: 900px) {
-    .orbit-gif-cards { --r: 180px; }
+/* Responsive scaling: large screens */
+@media (min-width: 1200px) {
+  .simple-gif-row .gif-item {
+    max-width: 380px;
   }
-  @media (max-width: 700px) {
-    .orbit-gif-cards { --r: 140px; }
-  }
-  @media (max-width: 520px) {
-    /* Stack vertically on very small screens for clarity */
-    .orbit-gif-cards {
-      height: auto;
-      display: grid;
-      gap: 1rem;
-    }
-    .orbit-ring { display: none; }
-    .orbit-card {
-      position: relative;
-      left: auto; top: auto;
-      transform: none;
-      width: min(92vw, 520px);
-      margin: 0 auto;
-    }
-  }
+}
 </style>
 
     <hr>
