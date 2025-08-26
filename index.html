@@ -93,25 +93,33 @@ main {
     </p>
     <hr>
 
-    <!-- GIF Showcase Section -->
+<!-- GIF Showcase Section - Glassmorphism Style -->
 <section style="margin: 2rem 0;">
   <div style="
-      border: 2px solid #ccc; 
-      border-radius: 25px; 
-      padding: 1.5rem; 
-      display: flex; 
-      justify-content: space-around; 
-      align-items: center;
-      background-color: #f9f9f9;
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 30px;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
       flex-wrap: wrap;
-      gap: 1.5rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      gap: 2rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
   ">
-    <img src="animations.gif" alt="GIF 1" style="border-radius: 15px; width: 250px; height: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-    <img src="combined.gif" alt="GIF 2" style="border-radius: 15px; width: 250px; height: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-    <img src="rec_attention.gif" alt="GIF 3" style="border-radius: 15px; width: 250px; height: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <img src="animations.gif" alt="GIF 1" style="border-radius: 20px; width: 220px; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s;">
+    <img src="combined.gif" alt="GIF 2" style="border-radius: 20px; width: 220px; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s;">
+    <img src="rec_attention.gif" alt="GIF 3" style="border-radius: 20px; width: 220px; height: auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.3s;">
   </div>
 </section>
+
+<script>
+  // Add subtle hover scale effect for GIFs
+  document.querySelectorAll('section img').forEach(img => {
+    img.addEventListener('mouseenter', () => img.style.transform = 'scale(1.08)');
+    img.addEventListener('mouseleave', () => img.style.transform = 'scale(1)');
+  });
+</script>
 
     <h2>Education 🎓 </h2>
     <ul>
