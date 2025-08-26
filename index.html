@@ -97,35 +97,68 @@ main {
 <div class="gif-section">
   <h2 class="gif-title">The Hidden Structure of Neural Features Has Its Own Story to Tell ✨</h2>
   <div class="simple-gif-row">
-    <div class="gif-wrapper tilted">
-      <img src="animations.gif" alt="Animations GIF" class="gif-item">
+    
+    <div class="book tilted">
+      <div class="cover">
+        <img src="animations.gif" alt="Animations GIF">
+      </div>
+      <div class="spine"></div>
       <div class="sparkle-container">
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
         <div class="sparkle"></div>
         <div class="sparkle"></div>
         <div class="sparkle"></div>
       </div>
     </div>
-    <div class="gif-wrapper tilted">
-      <img src="combined.gif" alt="Combined GIF" class="gif-item">
+
+    <div class="book tilted">
+      <div class="cover">
+        <img src="combined.gif" alt="Combined GIF">
+      </div>
+      <div class="spine"></div>
       <div class="sparkle-container">
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
         <div class="sparkle"></div>
         <div class="sparkle"></div>
         <div class="sparkle"></div>
       </div>
     </div>
-    <div class="gif-wrapper tilted">
-      <img src="rec_attention.gif" alt="Rectangular Attention GIF" class="gif-item">
+
+    <div class="book tilted">
+      <div class="cover">
+        <img src="rec_attention.gif" alt="Rectangular Attention GIF">
+      </div>
+      <div class="spine"></div>
       <div class="sparkle-container">
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
         <div class="sparkle"></div>
         <div class="sparkle"></div>
         <div class="sparkle"></div>
       </div>
     </div>
+
   </div>
 </div>
 
 <style>
-/* Container & Title */
 .gif-section {
   text-align: center;
   margin: 3rem 0;
@@ -134,36 +167,60 @@ main {
 .gif-title {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #2c3e50;
   margin-bottom: 2rem;
-  font-family: 'Segoe UI', sans-serif;
+  color: #2c3e50;
 }
 
-/* Row layout with 3D perspective */
 .simple-gif-row {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2rem;
   flex-wrap: wrap;
-  perspective: 1000px;
+  perspective: 1200px;
 }
 
-/* Wrapper for tilt + thickness */
-.gif-wrapper {
+/* Book container */
+.book {
   position: relative;
-  display: inline-block;
+  width: 280px;
   transform-style: preserve-3d;
-  transition: transform 0.35s ease;
+  transition: transform 0.5s ease;
 }
 
-/* Spine effect */
-.gif-wrapper::before {
-  content: '';
+.book:hover {
+  transform: rotateY(0deg) scale(1.05);
+  cursor: pointer;
+}
+
+/* Tilt from left side */
+.book.tilted {
+  transform: rotateY(20deg);
+}
+
+/* Cover face (GIF) */
+.book .cover {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.book .cover img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* Spine face (thickness) */
+.book .spine {
   position: absolute;
   top: 0;
-  left: -8px;
-  width: 8px;
+  left: -12px;
+  width: 12px;
   height: 100%;
   background: linear-gradient(to right, #ccc, #999);
   border-radius: 3px;
@@ -171,67 +228,46 @@ main {
   z-index: -1;
 }
 
-/* Tilt from left side (Y-axis) */
-.gif-wrapper.tilted {
-  transform: rotateY(20deg);
-}
-
-/* Hover: straighten + zoom */
-.gif-wrapper.tilted:hover {
-  transform: rotateY(0deg) scale(1.05);
-}
-
-/* GIF styling */
-.gif-item {
-  display: block;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-  width: 100%;
-  max-width: 280px;
-  object-fit: contain;
-  transition: box-shadow 0.35s ease;
-}
-
-.gif-wrapper:hover .gif-item {
-  box-shadow: 0 12px 28px rgba(0,0,0,0.2);
-  cursor: pointer;
-}
-
-/* Sparkle particles */
+/* Sparkles */
 .sparkle-container {
   position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
   pointer-events: none;
   overflow: visible;
 }
 
 .sparkle {
   position: absolute;
-  width: 4px;
-  height: 4px;
   border-radius: 50%;
-  background: radial-gradient(circle, #fff 0%, rgba(255,255,255,0) 70%);
-  opacity: 0.7;
-  animation: sparkle 3s infinite linear;
+  background: radial-gradient(circle, #fff 0%, rgba(255,255,255,0) 80%);
+  opacity: 0.8;
+  animation: sparkle linear infinite;
 }
 
-/* Randomize particle positions */
-.sparkle:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
-.sparkle:nth-child(2) { top: 50%; left: 70%; animation-delay: 1s; }
-.sparkle:nth-child(3) { top: 30%; left: 40%; animation-delay: 2s; }
+/* Randomize positions, size and animation duration */
+.sparkle:nth-child(1) { top: 10%; left: 15%; width:3px; height:3px; animation-duration:3s; animation-delay:0s; }
+.sparkle:nth-child(2) { top: 25%; left: 70%; width:2px; height:2px; animation-duration:4s; animation-delay:0.5s; }
+.sparkle:nth-child(3) { top: 40%; left: 30%; width:4px; height:4px; animation-duration:3.5s; animation-delay:1s; }
+.sparkle:nth-child(4) { top: 60%; left: 20%; width:2px; height:2px; animation-duration:4.2s; animation-delay:1.2s; }
+.sparkle:nth-child(5) { top: 15%; left: 55%; width:3px; height:3px; animation-duration:3.8s; animation-delay:1.8s; }
+.sparkle:nth-child(6) { top: 70%; left: 40%; width:2px; height:2px; animation-duration:4.5s; animation-delay:0.2s; }
+.sparkle:nth-child(7) { top: 35%; left: 80%; width:3px; height:3px; animation-duration:3.2s; animation-delay:0.8s; }
+.sparkle:nth-child(8) { top: 50%; left: 60%; width:2px; height:2px; animation-duration:4.1s; animation-delay:1.1s; }
+.sparkle:nth-child(9) { top: 20%; left: 35%; width:3px; height:3px; animation-duration:3.6s; animation-delay:0.6s; }
+.sparkle:nth-child(10) { top: 65%; left: 75%; width:2px; height:2px; animation-duration:4.3s; animation-delay:1.5s; }
 
 @keyframes sparkle {
   0% { transform: translate(0,0) scale(1); opacity: 0.5; }
-  50% { transform: translate(20px,-15px) scale(1.3); opacity: 1; }
-  100% { transform: translate(-10px,10px) scale(1); opacity: 0.5; }
+  50% { transform: translate(15px,-10px) scale(1.3); opacity: 1; }
+  100% { transform: translate(-10px,15px) scale(1); opacity: 0.5; }
 }
 
 /* Responsive scaling */
-@media (min-width: 768px) { .gif-item { max-width: 320px; } }
-@media (min-width: 1200px) { .gif-item { max-width: 380px; } }
+@media (min-width: 768px) { .book { width: 320px; } }
+@media (min-width: 1200px) { .book { width: 380px; } }
 </style>
 
     <hr>
