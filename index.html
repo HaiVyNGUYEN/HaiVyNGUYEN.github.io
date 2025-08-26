@@ -209,8 +209,8 @@ main {
       // Halo rectangle: slightly larger than book
       this.x = random(b.x - b.width*0.3, b.x + b.width*1.3);
       this.y = random(b.y - b.height*0.3, b.y + b.height*1.3);
-      this.size = random(3, 8);
-      this.color = `hsla(${random(0,360)}, 100%, 60%, 0.8)`;
+      this.size = random(1, 4);
+      this.color = `hsla(${random(0,360)}, 100%, 60%, 0.4)`;
       this.vx = random(-0.7, 0.7);
       this.vy = random(-0.7, 0.7);
     }
@@ -253,7 +253,7 @@ main {
     requestAnimationFrame(animate);
   }
 
-  initParticles(50); // 100 particles per book
+  initParticles(50); // 50 particles per book
   animate();
 </script>
 <!-- === GIF BOOK SECTION END === -->
