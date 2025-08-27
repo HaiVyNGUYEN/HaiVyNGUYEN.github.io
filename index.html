@@ -96,12 +96,12 @@ main {
 <div class="gif-section">
   <h2>Neural feature structures carry their own story to discover ✨</h2>
 
-  <canvas class="aura"></canvas> <!-- particles + light rays -->
+  <canvas class="aura"></canvas> <!-- particles + light glow -->
 
   <div class="gif-container">
     <a href="publication.html" class="book-wrapper">
       <div class="book"><img src="animations.gif" alt="Animation"></div>
-      <div class="book-aura"></div> <!-- dark halo -->
+      <div class="book-aura"></div>
     </a>
 
     <a href="publication.html" class="book-wrapper">
@@ -158,19 +158,19 @@ main {
   background: radial-gradient(circle, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 80%);
   border-radius: 50%;
   filter: blur(50px);
-  z-index: 0; /* bottom layer */
+  z-index: 0;
 }
 
 /* Book itself */
 .book {
-  width: 240px;
-  height: 240px;
+  width: 216px;  /* 90% size */
+  height: 216px;
   border-radius: 20px;
   overflow: hidden;
   transform: rotateY(30deg);
   transition: transform 0.6s ease, box-shadow 0.3s ease;
   position: relative;
-  z-index: 2; /* above dark halo, below canvas if needed */
+  z-index: 2;
   background: #fff;
   box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
@@ -186,18 +186,18 @@ main {
   box-shadow: 0 12px 35px rgba(0,0,0,0.3);
 }
 
-/* Particle + light rays canvas */
+/* Particle + light glow canvas */
 canvas.aura {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
   pointer-events: none;
-  z-index: 3; /* above dark halo and behind books hover effect */
+  z-index: 3;
 }
 </style>
 
 <script>
-// === Particles + Light Rays around books ===
+// === Particles + uniform light glow around books ===
 const canvas = document.querySelector('.gif-section .aura');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -226,76 +226,78 @@ setBookBounds();
 
 function random(min,max){return Math.random()*(max-min)+min;}
 
-// Particle class
+// Particle class: moves in circular halo around book
 class Particle {
-  constructor(bookIdx){this.bookIdx=bookIdx; this.reset();}
-  reset(){
-    const b = bookBounds[this.bookIdx];
-    // particles move in ring around book (avoid crossing)
-    const margin = 20;
-    this.x = random(b.x-margin, b.x+b.width+margin);
-    this.y = random(b.y-margin, b.y+b.height+margin);
-    this.size = random(2,5);
-    this.color = `hsla(${random(0,360)},100%,60%,0.6)`;
-    this.vx=random(-0.7,0.7);
-    this.vy=random(-0.7,0.7);
-  }
-  update(){
-    const b=bookBounds[this.bookIdx];
-    const minX=b.x-20, maxX=b.x+b.width+20;
-    const minY=b.y-20, maxY=b.y+b.height+20;
-    this.x+=this.vx; this.y+=this.vy;
-    if(this.x<minX||this.x>maxX) this.vx*=-1;
-    if(this.y<minY||this.y>maxY) this.vy*=-1;
-  }
-  draw(){ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle=this.color; ctx.fill();}
-}
-
-// Light rays class
-class Ray {
   constructor(bookIdx){
     this.bookIdx = bookIdx;
     this.reset();
   }
   reset(){
     const b = bookBounds[this.bookIdx];
-    this.x = random(b.x-30,b.x+b.width+30);
-    this.y = random(b.y-30,b.y+b.height+30);
-    this.length = random(50,120);
-    this.angle = random(0,Math.PI*2);
-    this.speed = random(0.002,0.01);
-    this.opacity = random(0.3,0.6);
+    const centerX = b.x + b.width/2;
+    const centerY = b.y + b.height/2;
+    const radiusMin = b.width/2 + 10;
+    const radiusMax = b.width/2 + 40;
+    this.angle = random(0, Math.PI*2);
+    this.radius = random(radiusMin, radiusMax);
+    this.x = centerX + this.radius*Math.cos(this.angle);
+    this.y = centerY + this.radius*Math.sin(this.angle);
+    this.size = random(2,5);
+    this.color = `hsla(${random(0,360)},100%,60%,0.6)`;
+    this.speed = random(0.01,0.03);
   }
-  update(){ this.angle += this.speed; }
+  update(){
+    this.angle += this.speed;
+    const b = bookBounds[this.bookIdx];
+    const centerX = b.x + b.width/2;
+    const centerY = b.y + b.height/2;
+    this.x = centerX + this.radius*Math.cos(this.angle);
+    this.y = centerY + this.radius*Math.sin(this.angle);
+  }
   draw(){
-    ctx.save();
-    ctx.translate(this.x,this.y);
-    ctx.rotate(this.angle);
-    let grad = ctx.createLinearGradient(0,0,this.length,0);
-    grad.addColorStop(0,`rgba(255,255,255,${this.opacity})`);
-    grad.addColorStop(1,'rgba(255,255,255,0)');
-    ctx.strokeStyle=grad;
-    ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(this.length,0); ctx.stroke();
-    ctx.restore();
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fillStyle=this.color;
+    ctx.fill();
   }
 }
 
-function initParticlesAndRays(numPerBook,numRaysPerBook){
-  particles=[];
-  rays=[];
-  for(let i=0;i<books.length;i++){
-    for(let j=0;j<numPerBook;j++) particles.push(new Particle(i));
-    for(let j=0;j<numRaysPerBook;j++) rays.push(new Ray(i));
+// Static uniform radial glow
+function drawBookGlows(){
+  for(const b of bookBounds){
+    const centerX = b.x + b.width/2;
+    const centerY = b.y + b.height/2;
+    const radius = b.width; // covers particle halo
+    const grad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+    grad.addColorStop(0, 'rgba(255,255,255,0.25)');
+    grad.addColorStop(0.3, 'rgba(255,255,255,0.15)');
+    grad.addColorStop(0.6, 'rgba(255,255,255,0.08)');
+    grad.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI*2);
+    ctx.fill();
   }
 }
-let rays=[];
-initParticlesAndRays(60,40);
+
+// Initialize particles
+function initParticles(numPerBook){
+  particles = [];
+  for(let i=0;i<books.length;i++){
+    for(let j=0;j<numPerBook;j++){
+      particles.push(new Particle(i));
+    }
+  }
+}
+initParticles(60);
 
 function animate(){
   ctx.clearRect(0,0,W,H);
-  for(let r of rays){ r.update(); r.draw(); }
-  for(let p of particles){ p.update(); p.draw(); }
+  drawBookGlows();
+  for(const p of particles){
+    p.update();
+    p.draw();
+  }
   requestAnimationFrame(animate);
 }
 animate();
