@@ -96,24 +96,21 @@ main {
 <div class="gif-section">
   <h2>Neural feature structures carry their own story to discover ✨</h2>
 
-  <canvas class="aura"></canvas> <!-- particles around books -->
+  <canvas class="aura"></canvas> <!-- particles + light rays -->
 
   <div class="gif-container">
     <a href="publication.html" class="book-wrapper">
       <div class="book"><img src="animations.gif" alt="Animation"></div>
-      <canvas class="book-rays"></canvas> 
-      <div class="book-aura"></div>
+      <div class="book-aura"></div> <!-- dark halo -->
     </a>
 
     <a href="publication.html" class="book-wrapper">
       <div class="book"><img src="combined.gif" alt="Combined"></div>
-      <canvas class="book-rays"></canvas>
       <div class="book-aura"></div>
     </a>
 
     <a href="publication.html" class="book-wrapper">
       <div class="book"><img src="rec_attention.gif" alt="Recurrent Attention"></div>
-      <canvas class="book-rays"></canvas>
       <div class="book-aura"></div>
     </a>
   </div>
@@ -164,17 +161,6 @@ main {
   z-index: 0; /* bottom layer */
 }
 
-/* Rays canvas */
-.book-rays {
-  position: absolute;
-  top: -30%;
-  left: -30%;
-  width: 160%;
-  height: 160%;
-  pointer-events: none;
-  z-index: 1; /* middle layer */
-}
-
 /* Book itself */
 .book {
   width: 240px;
@@ -184,7 +170,7 @@ main {
   transform: rotateY(30deg);
   transition: transform 0.6s ease, box-shadow 0.3s ease;
   position: relative;
-  z-index: 3; /* above aura and rays */
+  z-index: 2; /* above dark halo, below canvas if needed */
   background: #fff;
   box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
@@ -200,18 +186,18 @@ main {
   box-shadow: 0 12px 35px rgba(0,0,0,0.3);
 }
 
-/* Particle canvas around all books */
+/* Particle + light rays canvas */
 canvas.aura {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
   pointer-events: none;
-  z-index: 2; /* particles above dark halo and rays, below books */
+  z-index: 3; /* above dark halo and behind books hover effect */
 }
 </style>
 
 <script>
-// === Particles around books ===
+// === Particles + Light Rays around books ===
 const canvas = document.querySelector('.gif-section .aura');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -240,12 +226,15 @@ setBookBounds();
 
 function random(min,max){return Math.random()*(max-min)+min;}
 
+// Particle class
 class Particle {
   constructor(bookIdx){this.bookIdx=bookIdx; this.reset();}
   reset(){
     const b = bookBounds[this.bookIdx];
-    this.x = random(b.x-b.width*0.3, b.x+b.width*1.3);
-    this.y = random(b.y-b.height*0.3, b.y+b.height*1.3);
+    // particles move in ring around book (avoid crossing)
+    const margin = 20;
+    this.x = random(b.x-margin, b.x+b.width+margin);
+    this.y = random(b.y-margin, b.y+b.height+margin);
     this.size = random(2,5);
     this.color = `hsla(${random(0,360)},100%,60%,0.6)`;
     this.vx=random(-0.7,0.7);
@@ -253,8 +242,8 @@ class Particle {
   }
   update(){
     const b=bookBounds[this.bookIdx];
-    const minX=b.x-b.width*0.3, maxX=b.x+b.width*1.3;
-    const minY=b.y-b.height*0.3, maxY=b.y+b.height*1.3;
+    const minX=b.x-20, maxX=b.x+b.width+20;
+    const minY=b.y-20, maxY=b.y+b.height+20;
     this.x+=this.vx; this.y+=this.vy;
     if(this.x<minX||this.x>maxX) this.vx*=-1;
     if(this.y<minY||this.y>maxY) this.vy*=-1;
@@ -262,66 +251,54 @@ class Particle {
   draw(){ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle=this.color; ctx.fill();}
 }
 
-function initParticles(numPerBook){
-  particles=[];
-  for(let i=0;i<books.length;i++){
-    for(let j=0;j<numPerBook;j++) particles.push(new Particle(i));
+// Light rays class
+class Ray {
+  constructor(bookIdx){
+    this.bookIdx = bookIdx;
+    this.reset();
+  }
+  reset(){
+    const b = bookBounds[this.bookIdx];
+    this.x = random(b.x-30,b.x+b.width+30);
+    this.y = random(b.y-30,b.y+b.height+30);
+    this.length = random(50,120);
+    this.angle = random(0,Math.PI*2);
+    this.speed = random(0.002,0.01);
+    this.opacity = random(0.3,0.6);
+  }
+  update(){ this.angle += this.speed; }
+  draw(){
+    ctx.save();
+    ctx.translate(this.x,this.y);
+    ctx.rotate(this.angle);
+    let grad = ctx.createLinearGradient(0,0,this.length,0);
+    grad.addColorStop(0,`rgba(255,255,255,${this.opacity})`);
+    grad.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.strokeStyle=grad;
+    ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(this.length,0); ctx.stroke();
+    ctx.restore();
   }
 }
+
+function initParticlesAndRays(numPerBook,numRaysPerBook){
+  particles=[];
+  rays=[];
+  for(let i=0;i<books.length;i++){
+    for(let j=0;j<numPerBook;j++) particles.push(new Particle(i));
+    for(let j=0;j<numRaysPerBook;j++) rays.push(new Ray(i));
+  }
+}
+let rays=[];
+initParticlesAndRays(60,40);
 
 function animate(){
   ctx.clearRect(0,0,W,H);
-  for(let p of particles){p.update(); p.draw();}
+  for(let r of rays){ r.update(); r.draw(); }
+  for(let p of particles){ p.update(); p.draw(); }
   requestAnimationFrame(animate);
 }
-
-initParticles(60);
 animate();
-
-// === Rays for each book ===
-const rayCanvases = Array.from(document.querySelectorAll('.book-rays'));
-const rayContexts = rayCanvases.map(c=>c.getContext('2d'));
-
-let rayData = rayCanvases.map(c=>{
-  c.width=c.offsetWidth; c.height=c.offsetHeight;
-  let rays=[];
-  for(let i=0;i<40;i++){
-    rays.push({
-      x:c.width/2 + random(-20,20),
-      y:c.height/2 + random(-20,20),
-      length: random(30,100),
-      angle: random(0,Math.PI*2),
-      speed: random(0.002,0.01),
-      opacity: random(0.1,0.3)
-    });
-  }
-  return rays;
-});
-
-function animateRays(){
-  rayContexts.forEach((ctx,i)=>{
-    const canvas = rayCanvases[i];
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    rayData[i].forEach(r=>{
-      r.angle += r.speed;
-      ctx.save();
-      ctx.translate(r.x,r.y);
-      ctx.rotate(r.angle);
-      let grad = ctx.createLinearGradient(0,0,r.length,0);
-      grad.addColorStop(0,`rgba(255,255,255,${r.opacity})`);
-      grad.addColorStop(1,'rgba(255,255,255,0)');
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(0,0);
-      ctx.lineTo(r.length,0);
-      ctx.stroke();
-      ctx.restore();
-    });
-  });
-  requestAnimationFrame(animateRays);
-}
-animateRays();
 </script>
 <!-- === GIF BOOK SECTION END === -->
     
