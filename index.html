@@ -95,23 +95,16 @@ main {
 <!-- === GIF BOOK SECTION START === -->
 <div class="gif-section">
   <h2>Neural feature structures carry their own story to discover ✨</h2>
-
-  <canvas class="aura"></canvas> <!-- particles + light glow -->
-
+  <canvas class="aura"></canvas>
   <div class="gif-container">
     <a href="publication.html" class="book-wrapper">
       <div class="book"><img src="animations.gif" alt="Animation"></div>
-      <div class="book-aura"></div>
     </a>
-
     <a href="publication.html" class="book-wrapper">
       <div class="book"><img src="combined.gif" alt="Combined"></div>
-      <div class="book-aura"></div>
     </a>
-
     <a href="publication.html" class="book-wrapper">
       <div class="book"><img src="rec_attention.gif" alt="Recurrent Attention"></div>
-      <div class="book-aura"></div>
     </a>
   </div>
 </div>
@@ -140,30 +133,13 @@ main {
   flex-wrap: wrap;
   position: relative;
 }
-
-/* Book wrapper for perspective */
 .book-wrapper {
   position: relative;
   display: inline-block;
   perspective: 1200px;
 }
-
-/* Dark halo at bottom */
-.book-aura {
-  position: absolute;
-  top: -30%;
-  left: -30%;
-  width: 160%;
-  height: 160%;
-  background: radial-gradient(circle, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 80%);
-  border-radius: 50%;
-  filter: blur(50px);
-  z-index: 0;
-}
-
-/* Book itself */
 .book {
-  width: 216px;  /* 90% size */
+  width: 216px;
   height: 216px;
   border-radius: 20px;
   overflow: hidden;
@@ -185,8 +161,6 @@ main {
   transform: rotateY(0deg) scale(1.05);
   box-shadow: 0 12px 35px rgba(0,0,0,0.3);
 }
-
-/* Particle + light glow canvas */
 canvas.aura {
   position: absolute;
   top: 0; left: 0;
@@ -197,7 +171,6 @@ canvas.aura {
 </style>
 
 <script>
-// === Particles + uniform light glow around books ===
 const canvas = document.querySelector('.gif-section .aura');
 const ctx = canvas.getContext('2d');
 let particles = [];
@@ -205,8 +178,8 @@ let W,H;
 const books = Array.from(document.querySelectorAll('.book-wrapper .book'));
 
 function resizeCanvas(){
-  W=canvas.width=canvas.offsetWidth;
-  H=canvas.height=canvas.offsetHeight;
+  W = canvas.width = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
 }
 window.addEventListener('resize', ()=>{
   resizeCanvas();
@@ -226,7 +199,7 @@ setBookBounds();
 
 function random(min,max){return Math.random()*(max-min)+min;}
 
-// Particle class: moves in circular halo around book
+// Particle inside-out, avoiding book
 class Particle {
   constructor(bookIdx){
     this.bookIdx = bookIdx;
@@ -234,25 +207,38 @@ class Particle {
   }
   reset(){
     const b = bookBounds[this.bookIdx];
-    const centerX = b.x + b.width/2;
-    const centerY = b.y + b.height/2;
-    const radiusMin = b.width/2 + 10;
-    const radiusMax = b.width/2 + 40;
-    this.angle = random(0, Math.PI*2);
-    this.radius = random(radiusMin, radiusMax);
-    this.x = centerX + this.radius*Math.cos(this.angle);
-    this.y = centerY + this.radius*Math.sin(this.angle);
+    const margin = 10;
+    this.x = random(b.x - b.width*0.5, b.x + b.width*1.5);
+    this.y = random(b.y - b.height*0.5, b.y + b.height*1.5);
+    // constrain outside book rectangle
+    if(this.x > b.x && this.x < b.x+b.width){
+      this.x = this.x < b.x + b.width/2 ? b.x - margin : b.x + b.width + margin;
+    }
+    if(this.y > b.y && this.y < b.y+b.height){
+      this.y = this.y < b.y + b.height/2 ? b.y - margin : b.y + b.height + margin;
+    }
     this.size = random(2,5);
     this.color = `hsla(${random(0,360)},100%,60%,0.6)`;
-    this.speed = random(0.01,0.03);
+    this.vx = random(-0.7,0.7);
+    this.vy = random(-0.7,0.7);
   }
   update(){
-    this.angle += this.speed;
     const b = bookBounds[this.bookIdx];
-    const centerX = b.x + b.width/2;
-    const centerY = b.y + b.height/2;
-    this.x = centerX + this.radius*Math.cos(this.angle);
-    this.y = centerY + this.radius*Math.sin(this.angle);
+    const minX = b.x - b.width*0.5;
+    const maxX = b.x + b.width*1.5;
+    const minY = b.y - b.height*0.5;
+    const maxY = b.y + b.height*1.5;
+    this.x += this.vx;
+    this.y += this.vy;
+    if(this.x<minX||this.x>maxX) this.vx*=-1;
+    if(this.y<minY||this.y>maxY) this.vy*=-1;
+    // prevent crossing book
+    if(this.x>b.x && this.x<b.x+b.width){
+      this.x = this.vx>0 ? b.x+b.width+1 : b.x-1;
+    }
+    if(this.y>b.y && this.y<b.y+b.height){
+      this.y = this.vy>0 ? b.y+b.height+1 : b.y-1;
+    }
   }
   draw(){
     ctx.beginPath();
@@ -262,27 +248,25 @@ class Particle {
   }
 }
 
-// Static uniform radial glow
+// Static uniform light glow just outside book
 function drawBookGlows(){
   for(const b of bookBounds){
     const centerX = b.x + b.width/2;
     const centerY = b.y + b.height/2;
-    const radius = b.width; // covers particle halo
-    const grad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-    grad.addColorStop(0, 'rgba(255,255,255,0.25)');
-    grad.addColorStop(0.3, 'rgba(255,255,255,0.15)');
-    grad.addColorStop(0.6, 'rgba(255,255,255,0.08)');
-    grad.addColorStop(1, 'rgba(255,255,255,0)');
-    ctx.fillStyle = grad;
+    const radius = b.width*0.7; // slightly beyond book, small halo
+    const grad = ctx.createRadialGradient(centerX,centerY,0,centerX,centerY,radius);
+    grad.addColorStop(0,'rgba(255,255,255,0.25)');
+    grad.addColorStop(0.3,'rgba(255,255,255,0.15)');
+    grad.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=grad;
     ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI*2);
+    ctx.arc(centerX,centerY,radius,0,Math.PI*2);
     ctx.fill();
   }
 }
 
-// Initialize particles
 function initParticles(numPerBook){
-  particles = [];
+  particles=[];
   for(let i=0;i<books.length;i++){
     for(let j=0;j<numPerBook;j++){
       particles.push(new Particle(i));
@@ -293,7 +277,7 @@ initParticles(60);
 
 function animate(){
   ctx.clearRect(0,0,W,H);
-  drawBookGlows();
+  drawBookGlows();   // light glow outside book
   for(const p of particles){
     p.update();
     p.draw();
