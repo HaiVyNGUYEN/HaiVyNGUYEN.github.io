@@ -177,23 +177,25 @@ main {
   .book::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, rgba(0,0,0,0.8) 100%);
-  opacity: 0.6;
-  animation: pulseGlow 3s infinite;
-  z-index: 0;
+  top: -30%;
+  left: -30%;
+  width: 160%;   /* 100% + 30% left + 30% right */
+  height: 160%;  /* 100% + 30% top + 30% bottom */
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.5) 80%);
+  border-radius: 50%;
+  filter: blur(50px);
+  animation: pulseGlow 4s infinite alternate;
+  z-index: -1;
 }
-
 @keyframes pulseGlow {
-  0% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.15); }
-  100% { opacity: 0.4; transform: scale(1); }
-}
-
-.book img {
-  position: relative;
-  z-index: 1; /* keep GIFs above glow */
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1.3);
+    opacity: 0.25;
+  }
 }
 </style>
 
