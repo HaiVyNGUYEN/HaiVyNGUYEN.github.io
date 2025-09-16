@@ -166,8 +166,40 @@ main {
     </p>
   </div>
 </div>
-
 <hr>  
+
+<div class="experience-item">
+  <img src="loss_evolution.gif" alt="robust">
+  <div>
+    <strong>Convolutional Rectangular Attention Module</strong><br>
+    <em><strong>Hai‑Vy Nguyen</strong>, Fabrice Gamboa, Sixin Zhang, Reda Chhaibi, Serge Gratton, Thierry Giaccone</em><br>
+    <em>Preprint, 2024</em>
+
+    <p style="margin-top: 0.5rem;">
+  We propose a novel <strong>training framework for noise-robust deep neural networks</strong> that addresses the trade-off between robustness and clean-data accuracy. 
+  Our approach combines a <strong>penultimate-layer loss</strong> that enforces intra-class compactness and margin maximization with a <strong>class-wise feature alignment mechanism</strong> that aligns noisy and clean feature clusters. 
+  Furthermore, we provide a <strong>theoretical analysis</strong> showing that stabilizing features under Gaussian noise reduces the curvature of the loss landscape, enhancing robustness without explicit curvature regularization. 
+  Experiments on standard benchmarks and custom datasets confirm significant gains in robustness while preserving clean accuracy.
+</p>
+
+<ul style="margin-left: 1.2rem;">
+  <li>
+    <strong>Penultimate-Layer Objective:</strong> Improves feature discriminativeness and class separability by enforcing compactness and margins to analytical decision boundaries.
+  </li>
+  <li>
+    <strong>Class-Wise Feature Alignment:</strong> Brings noisy feature clusters closer to their clean counterparts, enhancing stability under input perturbations.
+  </li>
+  <li>
+    <strong>Theoretical Guarantee:</strong> Demonstrates that reduced curvature (Hessian eigenvalues) in input space correlates with improved robustness.
+  </li>
+  <li>
+    <strong>Robust Performance:</strong> Validated on standard benchmarks and a custom dataset, achieving robustness gains without sacrificing accuracy on clean data.
+  </li>
+</ul>
+  </div>
+</div>
+<hr>  
+    
   </main>
 </body>
 </html>
